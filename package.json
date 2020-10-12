@@ -1,0 +1,23 @@
+{
+  "name": "video_streaming",
+  "version": "1.0.0",
+  "description": "Cloud-based movie streaming app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Meet-Modi/Video_Streaming.git"
+  },
+  "author": "Meet Modi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Meet-Modi/Video_Streaming/issues"
+  },
+  "homepage": "https://github.com/Meet-Modi/Video_Streaming#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
