@@ -28,7 +28,7 @@ router.post('/login', async (req, res) => {
         res.status(400).send()
     }
 })
-/*
+
 router.post('/logout', auth, async (req, res) => {
     try {
         req.user.tokens = req.user.tokens.filter((token) => {
@@ -40,7 +40,7 @@ router.post('/logout', auth, async (req, res) => {
         res.status(500).send()
     }
 })
-*/
+
 
 router.post('/logoutAll', auth, async (req, res) => {
     try {
