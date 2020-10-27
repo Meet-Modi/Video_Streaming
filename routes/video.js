@@ -2,10 +2,11 @@ const express = require('express');
 const fs = require('fs');
 const Video = require('../models/video');
 const logUserHistory = require('../middleware/userHistory');
+const auth = require('../middleware/auth');
 
 const router = express.Router();
 
-router.get('/video/:id', logUserHistory, async (req, res) => {
+router.get('/video/:id', auth, logUserHistory, async (req, res) => {
 	const videoId = req.params.id;
 
 	try {
