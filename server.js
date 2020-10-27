@@ -11,6 +11,7 @@ const router = require('./routes');
 const UserRouter = require('./routes/user');
 const SearchRouter = require('./routes/search');
 const GenreRouter = require('./routes/genre');
+const CastRouter = require('./routes/cast');
 
 const env = process.env.NODE_ENV || 'DEVELOPMENT';
 
@@ -46,6 +47,7 @@ app.use('/api', videoRouter);
 app.use('/api/users', UserRouter);
 app.use('/api/search', SearchRouter);
 app.use('/api/genre', GenreRouter);
+app.use('/api/cast', CastRouter);
 
 const port = process.env.PORT || 3000;
 app.listen(port, function () {
