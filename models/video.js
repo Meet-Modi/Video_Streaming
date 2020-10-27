@@ -26,6 +26,9 @@ const videoSchema = new mongoose.Schema({
 			type: String,
 		},
 	],
+	fileName: {
+		type: String,
+	},
 });
 
 const Video = mongoose.model('Videos', videoSchema);
