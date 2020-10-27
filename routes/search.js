@@ -1,5 +1,5 @@
 const express = require('express')
-const User = require('../models/user')
+const Genre = require('../models/genre')
 const auth = require('../middleware/auth')
 
 const router = express.Router();
@@ -7,9 +7,8 @@ const router = express.Router();
 router.get('/:term', async (req, res) => {
     const term = req.params.term;
     try {
-
-        res.status(201).send({ term });
-
+        const result = await Genre.findOne({ "name": term });
+        res.status(201).send({ result });
     } catch (error) {
         res.status(400).send();
     }
