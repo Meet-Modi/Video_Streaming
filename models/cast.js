@@ -3,17 +3,17 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto-js');
 const config = require('../config');
 
-const GenreSchema = new mongoose.Schema({
-    name: {
+const CastSchema = new mongoose.Schema({
+    firstName: {
         type: String,
         required: true,
     },
-    description: {
+    lastName: {
         type: String,
-        required: false,
+        required: true,
     },
 });
 
-const Genre = mongoose.model('Genre', GenreSchema);
+const Cast = mongoose.model('Cast', CastSchema);
 
-module.exports = Genre;
+module.exports = Cast;
