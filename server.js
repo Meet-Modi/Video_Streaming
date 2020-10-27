@@ -9,6 +9,7 @@ const config = require('./config.js');
 const videoRouter = require('./routes/video');
 const router = require('./routes');
 const UserRouter = require('./routes/user');
+const SearchRouter = require('./routes/search');
 
 const env = process.env.NODE_ENV || 'DEVELOPMENT';
 
@@ -42,6 +43,7 @@ app.get('/', (req, res) => {
 app.use('/api', router);
 app.use('/api', videoRouter);
 app.use('/api/users', UserRouter);
+app.use('/api/search', SearchRouter);
 
 const port = process.env.PORT || 3000;
 app.listen(port, function () {
