@@ -1,20 +1,20 @@
 const express = require('express');
 const fs = require('fs');
+const Video = require('../models/video');
+const logUserHistory = require('../middleware/userHistory');
 
 const router = express.Router();
 
-router.get('/video/:id', async (req, res) => {
-	const userId = req.params.userId;
+router.get('/video/:id', logUserHistory, async (req, res) => {
 	const videoId = req.params.id;
 
 	try {
-		await userHistory.logUserHistory(userId, videoId);
-	} catch (err) {
-		console.log('Error in logging user history. Error: ' + err);
-	}
-
-	try {
 		// fetch video and show
+		const video = await Video.findById(videoId);
+		if (!video) {
+			return res.status(404).send();
+		}
+		res.status(200).send(video);
 	} catch (err) {
 		console.log('Error in fetching video. Error: ' + err);
 	}
