@@ -2,8 +2,7 @@ const UserHistory = require('../models/userHistory');
 
 const logUserHistory = async (req, res, next) => {
 	try {
-		console.log(req);
-		const userId = req.query.userId;
+		const userId = req.user._id;
 		const videoId = req.params.id;
 
 		const logUserHistory = new UserHistory({
