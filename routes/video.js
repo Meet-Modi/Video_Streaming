@@ -6,7 +6,7 @@ const auth = require('../middleware/auth');
 
 const router = express.Router();
 
-router.get('/video/:id', async (req, res) => {
+router.get('/video/:id', auth, logUserHistory, async (req, res) => {
 	const videoId = req.params.id;
 
 	try {
