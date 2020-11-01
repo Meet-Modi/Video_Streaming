@@ -2,9 +2,9 @@ module.exports = {
     secret: 'floccinaucinihilipilificationmeansuseless',
     database: {
         redis: {
-            host: process.env.NODE_ENV === 'production' ? 'env_cache' : 'dev_env_cache',
+            host: process.env.NODE_ENV === 'production' ? 'env_cache' : 'dev_env_videostream_cache',
             port: '6379',
-            keyPrefix: 'oz',
+            keyPrefix: 'cc',
             auth: 'CC_4932'
         }
     },

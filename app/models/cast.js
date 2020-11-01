@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto-js');
-const config = require('../config');
+const config = require('../helpers/config');
 
 const CastSchema = new mongoose.Schema({
     firstName: {

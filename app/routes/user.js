@@ -1,18 +1,41 @@
 const express = require('express')
 const User = require('../models/user')
 const auth = require('../middleware/auth')
+const CONFIG = require('../helpers/config.js');
+const CONST = require('../helpers/config.js');
+
+const kue = require('kue');
+const queue = kue.createQueue({ redis: CONFIG.database.redis });
+queue.setMaxListeners(1000);
 
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-    const user = new User(req.body)
-    try {
+    const user = new User(req.body);
+    const time = parseInt(new Date().getTime() / 1000);
+    const fetchUserJob = queue.create(CONST.WKR_FETCH_NEW_USER, {
+        timestamp: time,
+        User: user
+    })
+        .removeOnComplete(true)
+        .save((err) => {
+            if (err) { console.log(err); }
+            queue.client.expire(queue.client.getKey('job:' + fetchUserJob.id), 3600);
+        });
+
+    fetchUserJob.on('complete', (result) => {
+        console.log('[FST]', "Fetch and Store User Finished");
+        // process.exit(0);
+    });
+    res.status(201).send({ user })
+
+    /*try {
         await user.save()
         const token = await user.generateAuthToken()
         res.status(201).send({ user, token })
     } catch (error) {
         res.status(400).send()
-    }
+    }*/
 })
 
 router.post('/login', async (req, res) => {

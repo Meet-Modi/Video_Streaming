@@ -1,0 +1,8 @@
+     EXPRESS-router : dev_env_videostream_apis{Routes get,post,update,delete}
+                    |
+                    |
+                    | Redis
+                 /  |  \
+                /   |   \
+               /    |    \
+            user  video  recomend
