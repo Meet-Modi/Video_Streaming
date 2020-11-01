@@ -1,30 +1,22 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 require('dotenv').config();
+const app = express();
+app.use(bodyParser.json());
 const mongoose = require('mongoose').set('debug', true);
 const path = require('path');
-const config = require('./config.js');
-
-// Router Files
-const videoRouter = require('./routes/video');
-const router = require('./routes');
-const UserRouter = require('./routes/user');
-const SearchRouter = require('./routes/search');
-const GenreRouter = require('./routes/genre');
-const CastRouter = require('./routes/cast');
-
+const CONFIG = require('./app/helpers/config.js');
 const env = process.env.NODE_ENV || 'DEVELOPMENT';
 
-mongoose
-	.connect(env === 'DEVELOPMENT' ? config.DB_URI_DEV : config.DB_URI, {
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-		useCreateIndex: true,
-		useFindAndModify: false,
-		socketTimeoutMS: 3000,
-		keepAlive: true,
-		reconnectTries: 3000,
-	})
+mongoose.connect(env === 'DEVELOPMENT' ? CONFIG.DB_URI_DEV : CONFIG.DB_URI, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+	useCreateIndex: true,
+	useFindAndModify: false,
+	socketTimeoutMS: 3000,
+	keepAlive: true,
+	reconnectTries: 3000,
+})
 	.then(
 		function () {
 			//connected successfully
@@ -35,21 +27,41 @@ mongoose
 		}
 	);
 
-const app = express();
-app.use(bodyParser.json());
+app.set('port', process.env.SERVER_PORT || 3000);
 
-app.get('/', (req, res) => {
-	res.send('Hello World!');
+app.get('/ping', function (req, res) {
+	console.log("pong");
+	res.send({ message: 'PONG' });
 });
 
-app.use('/api', router);
+var server = app.listen(app.get('port'), function () {
+	var port = server.address().port;
+	console.log('Application started at port : ' + port);
+});
+
+
+
+
+
+
+
+
+
+// Router Files
+/*
+const videoRouter = require('./.routes/video');
+const router = require('./.routes');
+const UserRouter = require('./.routes/user');
+const SearchRouter = require('./.routes/search');
+const GenreRouter = require('./.routes/genre');
+const CastRouter = require('./.routes/cast');
+*/
+
+/*app.use('/api', router);
 app.use('/api', videoRouter);
 app.use('/api/users', UserRouter);
 app.use('/api/search', SearchRouter);
 app.use('/api/genre', GenreRouter);
 app.use('/api/cast', CastRouter);
+*/
 
-const port = process.env.PORT || 3000;
-app.listen(port, function () {
-	console.log('Server is running on port 3000');
-});

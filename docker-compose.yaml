@@ -1,0 +1,32 @@
+version: "3.5"
+
+services:
+  dev_env_videostream_cache:
+    container_name: dev_env_videostream_cache
+    image: bitnami/redis:latest
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=CC_4932
+    restart: always
+    networks:
+      - dev_env_video
+  dev_env_videostream_apis:
+    build: .
+    volumes:
+      - /usr/src/app/node_modules
+      - ./:/usr/src/app
+    ports:
+      - 8080:8080
+    environment:
+      - SERVER_PORT=8080
+      - NODE_ENV=DEVELOPMENT
+    container_name: dev_env_videostream_apis_
+    restart: always
+    networks:
+      - dev_env_video
+    command: npm run start
+
+networks:
+  dev_env_video:
+    name: dev_env_video
