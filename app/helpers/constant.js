@@ -1,5 +1,7 @@
 exports.WKR_FETCH_NEW_USER = 'wkr_fetch_new_user';
 exports.WKR_UPDATE_USER = 'wkr_update_user';
+exports.WKR_STORE_NEW_PREDICTION = 'wkr_store_new_prediction';
+
 /*exports.WKR_UPDATE_WEATHER = 'wkr_update_weather';
 exports.WKR_UPDATE_SENSOR = 'wkr_update_sensor';
 exports.WKR_UPDATE_TRAFFIC = 'wkr_update_traffic';
