@@ -10,18 +10,12 @@ queue.setMaxListeners(100000);
 
 const router = express.Router();
 
-
 router.post('/', async (req, res) => {
     const user = req.body;
     const time = parseInt(new Date().getTime() / 1000);
-    const name = user.name;
-    const email = user.email;
-    const password = user.password;
     const fetchUserJob = queue.create(CONST.WKR_FETCH_NEW_USER, {
         timestamp: time,
         user: user,
-        email: email,
-        password: password
     })
         .removeOnComplete(true)
         .save((err) => {
@@ -30,17 +24,13 @@ router.post('/', async (req, res) => {
         });
 
     fetchUserJob.on('complete', (result) => {
+        res.status(201).send(result)
         console.log('[FST]', "Fetch and Store User Finished");
     });
-    res.status(201).send({ user })
-
-    /*try {
-        await user.save()
-        const token = await user.generateAuthToken()
-        res.status(201).send({ user, token })
-    } catch (error) {
-        res.status(400).send()
-    }*/
+    fetchUserJob.on('error', () => {
+        console.log('[FST]', "Fetch and Store User Failed");
+        res.status(401).send({ message: 'Error while Creating User' })
+    });
 })
 
 router.post('/login', async (req, res) => {

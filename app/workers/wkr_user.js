@@ -28,15 +28,14 @@ mongoose.connect(process.env.NODE_ENV === 'DEVELOPMENT' ? CONFIG.DB_URI_DEV : CO
     );
 
 queue.process(CONST.WKR_FETCH_NEW_USER, async (job, done) => {
-    console.log("--------------------------------new user process called");
-    console.log("-----------" + job.data.user.name);
     const user = new User(job.data.user);
     try {
         await user.save()
         const token = await user.generateAuthToken()
-        console.log({ user, token });
+        result = { user, token };
+        console.log(result);
+        done(null, result);
     } catch (error) {
-        console.log("Error");
+        done(new Error('User not created'));
     }
-    done();
 });

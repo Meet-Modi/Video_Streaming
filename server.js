@@ -16,26 +16,6 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true, parameterLimit: 100000, limit: '500mb' }));
 app.use(bodyParser.json({ limit: '500mb' }));
-/*
-mongoose.connect(env === 'DEVELOPMENT' ? CONFIG.DB_URI_DEV : CONFIG.DB_URI, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-	useCreateIndex: true,
-	useFindAndModify: false,
-	socketTimeoutMS: 3000,
-	keepAlive: true,
-	reconnectTries: 3000,
-})
-	.then(
-		function () {
-			//connected successfully
-			console.log('Database connection successful!');
-		},
-		function (err) {
-			console.log(err);
-		}
-	);
-*/
 
 const videoRouter = require('./app/routes/video');
 const router = require('./app/routes');

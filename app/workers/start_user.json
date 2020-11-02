@@ -3,7 +3,7 @@
         {
             "name": "FETCH_USER",
             "script": "./app/workers/wkr_user.js",
-            "instances": 2,
+            "instances": 1,
             "exec_mode": "fork",
             "max_memory_restart": "8000M",
             "node_args": "--max_old_space_size=8000"
