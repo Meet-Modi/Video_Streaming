@@ -10,7 +10,7 @@ queue.setMaxListeners(100000);
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/signup', async (req, res) => {
     const user = req.body;
     const time = parseInt(new Date().getTime() / 1000);
     const fetchUserJob = queue.create(CONST.WKR_FETCH_NEW_USER, {
@@ -25,26 +25,35 @@ router.post('/', async (req, res) => {
 
     fetchUserJob.on('complete', (result) => {
         res.status(201).send(result)
-        console.log('[FST]', "Fetch and Store User Finished");
+        console.log('[FSU]', "Fetch and Store User Finished");
     });
     fetchUserJob.on('error', () => {
-        console.log('[FST]', "Fetch and Store User Failed");
+        console.log('[FSU]', "Fetch and Store User Failed");
         res.status(401).send({ message: 'Error while Creating User' })
     });
 })
 
 router.post('/login', async (req, res) => {
-    try {
-        const user = await User.findByCredentials(
-            req.body.email,
-            req.body.password
-        )
-        const token = await user.generateAuthToken()
-        res.send({ user, token })
-    } catch (e) {
-        console.log(e)
-        res.status(400).send()
-    }
+    const user = req.body;
+    const time = parseInt(new Date().getTime() / 1000);
+    const LoginUserJob = queue.create(CONST.WKR_LOGIN_USER, {
+        timestamp: time,
+        user: user,
+    })
+        .removeOnComplete(true)
+        .save((err) => {
+            if (err) { console.log(err); }
+            queue.client.expire(queue.client.getKey('job:' + LoginUserJob.id), 3600);
+        });
+
+    LoginUserJob.on('complete', (result) => {
+        res.status(201).send(result)
+        console.log('[LU]', "Login User Finished");
+    });
+    LoginUserJob.on('error', () => {
+        console.log('[FSU]', "Login User Failed");
+        res.status(401).send({ message: 'invalid credentials' })
+    });
 })
 
 router.post('/logout', auth, async (req, res) => {

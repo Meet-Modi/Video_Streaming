@@ -39,3 +39,17 @@ queue.process(CONST.WKR_FETCH_NEW_USER, async (job, done) => {
         done(new Error('User not created'));
     }
 });
+
+queue.process(CONST.WKR_LOGIN_USER, async (job, done) => {
+    const user = new User(job.data.user);
+    try {
+        const user = await User.findByCredentials(
+            job.data.user.email,
+            job.data.user.password
+        )
+        const token = await user.generateAuthToken()
+        done(null, { user, token });
+    } catch (error) {
+        done(new Error('Invalid Credentials'));
+    }
+});
