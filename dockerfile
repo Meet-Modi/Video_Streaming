@@ -27,6 +27,8 @@ FROM keymetrics/pm2:10-alpine
 WORKDIR /usr/src/app
 COPY --from=builder node_modules node_modules
 
+COPY assets /usr/src/app/assets
+
 COPY . .
 
 CMD [ "npm", "run", "prod" ]

@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
-    "user": "pm2-runtime start ./app/workers/start_user.json --watch"
+    "user": "pm2-runtime start ./app/workers/start_user.json --watch",
+    "video": "pm2-runtime start ./app/workers/start_video.json --watch"
   },
   "repository": {
     "type": "git",

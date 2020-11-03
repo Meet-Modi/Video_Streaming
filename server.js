@@ -24,34 +24,7 @@ const SearchRouter = require('./app/routes/search');
 const GenreRouter = require('./app/routes/genre');
 const CastRouter = require('./app/routes/cast');
 
-app.set('port', process.env.SERVER_PORT || 3000);
-
-app.get('/ping', function (req, res) {
-	console.log("pong");
-	res.send({ message: 'PONG' });
-});
-app.use('/api', router);
-app.use('/api', videoRouter);
-app.use('/api/users', UserRouter);
-app.use('/api/search', SearchRouter);
-app.use('/api/genre', GenreRouter);
-app.use('/api/cast', CastRouter);
-
-
-var server = app.listen(app.get('port'), function () {
-	var port = server.address().port;
-	console.log('Application started at port : ' + port);
-});
-
-
-
-
-
-
-
-
-
-/*mongoose.connect(env === 'DEVELOPMENT' ? CONFIG.DB_URI_DEV : CONFIG.DB_URI, {
+mongoose.connect(env === 'DEVELOPMENT' ? CONFIG.DB_URI_DEV : CONFIG.DB_URI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 	useCreateIndex: true,
@@ -69,4 +42,32 @@ var server = app.listen(app.get('port'), function () {
 			console.log(err);
 		}
 	);
-*/
+
+
+app.set('port', process.env.SERVER_PORT || 3000);
+
+app.get('/ping', function (req, res) {
+	console.log("pong");
+	res.send({ message: 'PONG' });
+});
+app.use('/api', router);
+app.use('/api', videoRouter);
+app.use('/api/users', UserRouter);
+app.use('/api/search', SearchRouter);
+app.use('/api/genre', GenreRouter);
+app.use('/api/cast', CastRouter);
+
+var server = app.listen(app.get('port'), function () {
+	var port = server.address().port;
+	console.log('Application started at port : ' + port);
+});
+
+
+
+
+
+
+
+
+
+
