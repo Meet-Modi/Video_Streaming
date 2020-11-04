@@ -12,12 +12,34 @@ const CONFIG = require('./app/helpers/config.js');
 const queue = kue.createQueue({ redis: CONFIG.database.redis });
 queue.setMaxListeners(100000);
 
+mongoose.connect(process.env.NODE_ENV === 'DEVELOPMENT' ? CONFIG.DB_URI_DEV : CONFIG.DB_URI, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+	useCreateIndex: true,
+	useFindAndModify: false,
+	socketTimeoutMS: 3000,
+	keepAlive: true,
+	reconnectTries: 3000,
+})
+	.then(
+		function () {
+			//connected successfully
+			console.log('Database connection successful!');
+		},
+		function (err) {
+			console.log(err);
+		}
+	);
+
+
 const app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true, parameterLimit: 100000, limit: '500mb' }));
 app.use(bodyParser.json({ limit: '500mb' }));
 
+// Router Files
 //const router = require('./app/routes');
+const videoRouter = require('./routes/video');
 const UserRouter = require('./app/routes/user');
 const SearchRouter = require('./app/routes/search');
 const GenreRouter = require('./app/routes/genre');
@@ -31,6 +53,7 @@ app.get('/ping', function (req, res) {
 });
 
 //app.use('/api', router);
+app.use('/api', videoRouter);
 app.use('/api/users', UserRouter);
 app.use('/api/search', SearchRouter);
 app.use('/api/genre', GenreRouter);
