@@ -23,4 +23,6 @@ COPY assets /usr/src/app/assets
 
 COPY . .
 
+EXPOSE 8080
+
 CMD [ "npm", "run", "prod" ]
