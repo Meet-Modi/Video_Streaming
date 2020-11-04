@@ -6,9 +6,9 @@ const auth = require('../middleware/auth');
 
 const router = express.Router();
 
-router.get('/video/:id', auth, logUserHistory, async (req, res) => {
+router.get('/video/:id', async (req, res) => {
 	const videoId = req.params.id;
-
+	console.log(videoId);
 	try {
 		// fetch video and show
 		const video = await Video.findById(videoId);
@@ -57,7 +57,7 @@ router.get('/video/:id', auth, logUserHistory, async (req, res) => {
 });
 
 router.get('/video', function (req, res) {
-	const path = 'assets/sample.mp4';
+	const path = 'assets/avengers.mp4';
 	const stat = fs.statSync(path);
 	const fileSize = stat.size;
 	const range = req.headers.range;

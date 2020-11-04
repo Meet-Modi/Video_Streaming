@@ -12,20 +12,12 @@ RUN apk update \
     git \
     && apk add \
     bash
-COPY package*.json ./
-
-#RUN npm install
-RUN npm ci
-
-#RUN npm install --silent --production \
-#    && apk del build-dependencies \
-#    && rm -rf /var/cache/apk/*
-
-# The instructions for second stage
-FROM keymetrics/pm2:10-alpine
 
 WORKDIR /usr/src/app
-COPY --from=builder node_modules node_modules
+
+COPY package*.json ./
+
+RUN npm install
 
 COPY assets /usr/src/app/assets
 

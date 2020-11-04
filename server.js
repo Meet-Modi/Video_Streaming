@@ -38,8 +38,8 @@ app.use(bodyParser.urlencoded({ extended: true, parameterLimit: 100000, limit: '
 app.use(bodyParser.json({ limit: '500mb' }));
 
 // Router Files
-//const router = require('./app/routes');
-const videoRouter = require('./routes/video');
+const router = require('./app/routes');
+const videoRouter = require('./app/routes/video');
 const UserRouter = require('./app/routes/user');
 const SearchRouter = require('./app/routes/search');
 const GenreRouter = require('./app/routes/genre');

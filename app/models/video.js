@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto-js');
-const config = require('./app/helpers/config.js');
+const config = require('../helpers/config.js');
 
 const videoSchema = new mongoose.Schema({
     name: {
