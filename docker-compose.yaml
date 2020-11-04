@@ -45,7 +45,7 @@ services:
     depends_on:
       - dev_env_apis
     command: npm run user
-  dev_env_wkr_video:
+  dev_env_wkr_recommendation:
     build: .
     volumes:
       - /usr/src/app/node_modules
@@ -55,13 +55,13 @@ services:
     environment:
       - SERVER_PORT=8080
       - NODE_ENV=DEVELOPMENT
-    container_name: dev_env_wkr_video
+    container_name: dev_env_wkr_recommendation
     restart: always
     networks:
       - dev_env_video
     depends_on:
       - dev_env_apis
-    command: npm run video
+    command: npm run recommendation
 
 networks:
   dev_env_video:

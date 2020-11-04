@@ -6,48 +6,36 @@ const auth = require('../middleware/auth')
 
 const router = express.Router();
 
+const CONFIG = require('../helpers/config.js');
+const CONST = require('../helpers/constant.js');
+
+const kue = require('kue');
+const queue = kue.createQueue({ redis: CONFIG.database.redis });
+queue.setMaxListeners(100000);
+
+
 router.get('/:term', async (req, res) => {
     const term = req.params.term;
-    try {
-        var search_result = [];
-        // GENRE SEARCH QUERY
-        var result = await Genre.find({ name: term });
-        var genre_id = 0;
-        if (result.length > 0) {
-            genre_id = result[0]._id;
-        }
-        var result_1 = await Video.find({ genreIds: genre_id });
-        if (result_1.length > 0) {
-            result_1.forEach(element => {
-                search_result.push(element._id);
-            });
-        }
-        // VIDEO SEARCH QUERY
-        var result_2 = await Video.find({ name: { $regex: term } });
-        result_2.forEach(element => {
-            search_result.push(element._id);
+    const time = parseInt(new Date().getTime() / 1000);
+    const SearchTermJob = queue.create(CONST.WKR_SEARCH_TERM, {
+        timestamp: time,
+        term: term,
+    })
+        .removeOnComplete(true)
+        .save((err) => {
+            if (err) { console.log(err); }
+            queue.client.expire(queue.client.getKey('job:' + SearchTermJob.id), 3600);
         });
-        // CAST SEARCH QUERY
-        var result_3 = await Cast.find({ $or: [{ firstname: { $regex: term } }, { lastname: { $regex: term } }] });
-        var result_4 = [];
-        console.log(result_3);
-        if (result_3.length > 0) {
-            for (const resu of result_3) {
-                console.log(resu._id);
-                result_4 = await Video.find({ castIds: resu._id });
-                if (result_4.length > 0) {
-                    result_4.forEach(element => {
-                        search_result.push(element._id);
-                    });
-                }
-            }
-        }
-        res.status(201).send({ search_result });
 
-    } catch (error) {
-        console.log(error);
-        res.status(400).send();
-    }
+    SearchTermJob.on('complete', (result) => {
+        res.status(201).send(result)
+        console.log('[ST]', "Search Term Finished");
+    });
+    SearchTermJob.on('error', () => {
+        console.log('[ST]', "Search Term Failed");
+        res.status(401).send({ message: 'Oops! nothing like this exists' })
+    });
+
 })
 
 module.exports = router

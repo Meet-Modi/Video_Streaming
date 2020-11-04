@@ -1,0 +1,12 @@
+{
+    "apps": [
+        {
+            "name": "FETCH_RECOMMENDATION",
+            "script": "./app/workers/wkr_recommendation.js",
+            "instances": 1,
+            "exec_mode": "fork",
+            "max_memory_restart": "8000M",
+            "node_args": "--max_old_space_size=8000"
+        }
+    ]
+}
