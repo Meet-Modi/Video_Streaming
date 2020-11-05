@@ -14,7 +14,7 @@ const queue = kue.createQueue({ redis: CONFIG.database.redis });
 queue.setMaxListeners(100000);
 
 
-router.get('/:term', async (req, res) => {
+router.get('/term/:term', async (req, res) => {
     const term = req.params.term;
     const time = parseInt(new Date().getTime() / 1000);
     const SearchTermJob = queue.create(CONST.WKR_SEARCH_TERM, {
@@ -37,5 +37,28 @@ router.get('/:term', async (req, res) => {
     });
 
 })
+
+router.get('/explore', async (req, res) => {
+    const time = parseInt(new Date().getTime() / 1000);
+    const ExploreJob = queue.create(CONST.WKR_EXPLORE, {
+        timestamp: time
+    })
+        .removeOnComplete(true)
+        .save((err) => {
+            if (err) { console.log(err); }
+            queue.client.expire(queue.client.getKey('job:' + ExploreJob.id), 3600);
+        });
+
+    ExploreJob.on('complete', (result) => {
+        res.status(201).send(result)
+        console.log('[ST]', "Explore Finished");
+    });
+    ExploreJob.on('error', () => {
+        console.log('[ST]', "Explore Failed");
+        res.status(401).send({ message: 'Oops! nothing like this exists' })
+    });
+
+})
+
 
 module.exports = router

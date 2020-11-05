@@ -73,3 +73,24 @@ queue.process(CONST.WKR_SEARCH_TERM, async (job, done) => {
         done(new Error('Nothing Found'));
     }
 });
+
+queue.process(CONST.WKR_EXPLORE, async (job, done) => {
+    try {
+        var search_result = [];
+        var result_1 = await Video.find();
+        result_1.forEach(element => {
+            search_result.push(
+                {
+                    name: element.name,
+                    id: element._id,
+                    genreIds: element.genreIds,
+                    description: element.description,
+                    castIds: element.castIds
+                }
+            );
+        });
+        done(null, search_result);
+    } catch (error) {
+        done(new Error('Nothing to show!'));
+    }
+});
