@@ -28,7 +28,7 @@ class Cards extends React.Component {
 
 
     render() {
-        console.log("entered and the data is "+ this.state.title);
+        //console.log("entered and the data is "+ this.state.title);
         return (
             <div className={this.state.expanded ? "card expanded" : "card"} onClick={this.expandCard}>
                 <div className="card-image">

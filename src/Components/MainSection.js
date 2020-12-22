@@ -9,7 +9,6 @@ class MainSection extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            movies: props.movies,
             nowPlaying: null
             
         }
@@ -62,7 +61,7 @@ class MainSection extends React.Component {
                     </div>
                 </header>
                 <div className="row">
-                    {this.state.movies.map((movie, index) => (
+                    {this.props.movies.map((movie, index) => (
                         <Cards
                             key={movie.id}
                             title={movie.title}
