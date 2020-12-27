@@ -32,12 +32,12 @@ class Cards extends React.Component {
         return (
             <div className={this.state.expanded ? "card expanded" : "card"} onClick={this.expandCard}>
                 <div className="card-image">
-                    <img src={`${process.env.PUBLIC_URL}/assets/images/` + this.state.image + `.jpg`} alt="ima" />
+                    <img src={require(`../images/` + this.state.image + `.jpg`)} alt="ima" />
                 </div>
                 <div className="details">
                     <h3>
                         {this.state.title}
-                     
+
                     </h3>
                     <p>    {this.state.cover}</p>
                     <div className="actions">

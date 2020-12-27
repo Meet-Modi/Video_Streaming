@@ -22,36 +22,36 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-     axios.get("http://35.192.24.74/api/search/explore").then(
-          result => {
-            let movies = [];
-            result.data.forEach(element => {
-                      element.cover = element.id;
-                      //console.log(element.cover);
-                      element.title = element.name;
-                      element.watched = false;
-                      element.inPlaylist = false;
-                      element.favorite = true;
-                      element.link = "http://35.192.24.74/api/video/" + element.id;
-                      movies.push(element);
-                    })
+    axios.get("http://35.226.140.212/api/search/explore").then(
+      result => {
+        let movies = [];
+        result.data.forEach(element => {
+          element.cover = element.id;
+          //console.log(element.cover);
+          element.title = element.name;
+          element.watched = false;
+          element.inPlaylist = false;
+          element.favorite = true;
+          element.link = "http://35.226.140.212/api/video/" + element.id;
+          movies.push(element);
+        })
 
-            this.setState({
-              items: movies,
-              fetched: true
-            });
-            console.log(this.state.items);
-          },
-          // Note: it's important to handle errors here
-          // instead of a catch() block so that we don't swallow
-          // exceptions from actual bugs in components.
-          error => {
-            this.setState({
-              isLoading: false,
-              error
-            });
-          }
-        );
+        this.setState({
+          items: movies,
+          fetched: true
+        });
+        console.log(this.state.items);
+      },
+      // Note: it's important to handle errors here
+      // instead of a catch() block so that we don't swallow
+      // exceptions from actual bugs in components.
+      error => {
+        this.setState({
+          isLoading: false,
+          error
+        });
+      }
+    );
 
     setTimeout(() => {
       this.setState({
@@ -69,7 +69,7 @@ class App extends React.Component {
         <Lazyloader />
       )
     } else {
-      
+
       // if (this.state.items) {
       //   this.state.items.forEach(element => {
       //     element.cover = element.id;
